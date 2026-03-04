@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   sodipodi:docname="observer.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#cccccc"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="1"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="1.75"
+     inkscape:cx="255.71429"
+     inkscape:cy="256"
+     inkscape:window-width="1920"
+     inkscape:window-height="1166"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:144px;font-family:Sans;-inkscape-font-specification:'Sans, Bold';writing-mode:lr-tb;direction:ltr;fill:#000000;stroke-width:15.0009;stroke-linecap:round;stroke-linejoin:round;paint-order:fill markers stroke"
+       x="199.11993"
+       y="307.48001"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         x="199.11993"
+         y="307.48001">O</tspan></text>
+    <circle
+       style="fill:none;stroke:#000000;stroke-width:15.0009;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:fill markers stroke"
+       id="path1"
+       cx="256"
+       cy="256"
+       r="211.42857" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:15.0009;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:fill markers stroke"
+       d="M 44.571426,256 H 14.857143"
+       id="path3" />
+  </g>
+</svg>

@@ -46,14 +46,14 @@ View3D {
 
         Text {
             font.family: "Noto Sans Mono"
-            text: "|0⟩"
+            text: "|1⟩"
             y: -125
         }
 
         Text {
 
             font.family: "Noto Sans Mono"
-            text: "|1⟩"
+            text: "|0⟩"
             y: 100
         }
     }

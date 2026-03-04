@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="hadamaradico">hadamarad.svg</file>
+        <file alias="inversesico">inverses.svg</file>
+        <file alias="observerico">observer.svg</file>
+        <file alias="paulixico">paulix.svg</file>
+        <file alias="pauliyico">pauliy.svg</file>
+        <file alias="paulizico">pauliz.svg</file>
+        <file alias="qubitico">qubit.svg</file>
+        <file alias="sico">s.svg</file>
+    </qresource>
+</RCC>

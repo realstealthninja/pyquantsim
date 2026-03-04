@@ -1,16 +1,15 @@
 from enum import Enum
 from math import isclose
 from typing import override
+
 from PySide6 import QtGui
 from PySide6.QtCore import QPointF, QRect, QRectF, Qt, Signal
 from PySide6.QtGui import (
     QAction,
-    QContextMenuEvent,
     QKeyEvent,
     QPainter,
     QPainterPath,
     QPen,
-    Qt,
 )
 from PySide6.QtWidgets import (
     QGraphicsItem,
@@ -20,9 +19,14 @@ from PySide6.QtWidgets import (
     QGraphicsView,
     QMenu,
 )
+from quantsim.circuit.circuit import Circuit
+from quantsim.circuit.observer import Observer
 from quantsim.core import Qubit
 
+from .observer import ObserverCADItem
+
 from .caditem import CADItem
+from .paulix import PauliXCADItem
 from .qubit import QubitCADItem
 
 
@@ -40,6 +44,7 @@ class GraphicsCanvas(QGraphicsScene):
     current_pos: QPointF
     editor: Editor
     selected_caditem: CADItem | None = None
+    selected_input: bool | None = None
     temp_paths: list[QGraphicsItem] = []
     temp_caditems: list[CADItem] = []
     wires: list[QGraphicsItem] = []
@@ -50,28 +55,28 @@ class GraphicsCanvas(QGraphicsScene):
         super().__init__()
         self.editor = editor
         self.setBackgroundBrush(Qt.GlobalColor.white)
-        self.add_caditem(QubitCADItem())
 
     def add_caditem(self, item: CADItem) -> None:
         self.addItem(item)
         self.cad_items.append(item)
+        self.editor.circuit.add(item.component())
 
     def snap(self, pos: QPointF) -> QPointF:
         for caditem in self.cad_items:
-            _pos = caditem.input
-            if (
-                _pos
-                and isclose(_pos.x(), pos.x(), rel_tol=1e-1)
-                and isclose(_pos.y(), pos.y(), rel_tol=1e-1)
-            ):
-                return _pos
-            _pos = caditem.output
-            if (
-                _pos
-                and isclose(_pos.x(), pos.x(), rel_tol=1e-1)
-                and isclose(_pos.y(), pos.y(), rel_tol=1e-1)
-            ):
-                return _pos
+            if caditem.input:
+                _pos = caditem.mapToScene(caditem.input)
+                if isclose(_pos.x(), pos.x(), rel_tol=1e-2) and isclose(
+                    _pos.y(), pos.y(), rel_tol=1e-2
+                ):
+                    return _pos
+            elif caditem.output:
+                _pos = caditem.mapToScene(caditem.output)
+                if (
+                    _pos
+                    and isclose(_pos.x(), pos.x(), rel_tol=1e-2)
+                    and isclose(_pos.y(), pos.y(), rel_tol=1e-2)
+                ):
+                    return _pos
 
         point = pos.toPoint()
         if point.x() % 100 < 15:
@@ -85,21 +90,89 @@ class GraphicsCanvas(QGraphicsScene):
     @override
     def contextMenuEvent(self, event: QGraphicsSceneContextMenuEvent, /) -> None:
         for item in self.cad_items:
+
+            def selected_input():
+                self.selected_input = True
+                self.selected_caditem = item
+
+            def selected_ouput():
+                self.selected_input = False
+                self.selected_caditem = item
+
+            def connect_input():
+                assert self.selected_caditem is not None
+                assert self.selected_caditem.outputItems is not None
+                assert item.inputItems is not None
+
+                assert self.selected_caditem.output is not None
+                assert item.input is not None
+
+                input_pos = item.mapToScene(item.input)
+                output_pos = self.selected_caditem.mapToScene(
+                    self.selected_caditem.output
+                )
+
+                self.selected_caditem.outputItems.append(item)
+                item.inputItems.append(self.selected_caditem)
+                self.selected_caditem.component().connect_ouput(item.component())
+                self.draw_wire(output_pos, input_pos)
+
+            def connect_output():
+                assert self.selected_caditem is not None
+                assert self.selected_caditem.inputItems is not None
+                assert item.outputItems is not None
+
+                assert self.selected_caditem.input is not None
+                assert item.output is not None
+
+                input_pos = self.selected_caditem.mapToScene(
+                    self.selected_caditem.input
+                )
+                output_pos = item.mapToScene(item.output)
+
+                self.selected_caditem.inputItems.append(item)
+                item.outputItems.append(self.selected_caditem)
+                self.selected_caditem.component().connect_input(item.component())
+                self.draw_wire(input_pos, output_pos)
+
             if item.contains(item.mapFromScene(event.scenePos())):
                 menu = QMenu(title="Editor menu")
-                menu.addAction(QAction(parent=self, text="Connect"))
+                if (
+                    self.selected_caditem is not None
+                    and self.selected_caditem is not item
+                ):
+                    connect_menu = menu.addMenu("Connect")
+                    if item.inputItems is not None:
+                        connect_input_action = QAction(text="input")
+                        _ = connect_input_action.triggered.connect(connect_input)
+                        connect_menu.addAction(connect_input_action)
+                    if item.outputItems is not None:
+                        connect_output_action = QAction("ouput")
+                        _ = connect_output_action.triggered.connect(connect_output)
+                        connect_menu.addAction(connect_output_action)
+                else:
+                    select_menu = menu.addMenu("Select")
+                    if item.inputItems is not None:
+                        select_input_action = QAction(text="input")
+                        _ = select_input_action.triggered.connect(selected_input)
+                        select_menu.addAction(select_input_action)
+                    if item.outputItems is not None:
+                        select_output_action = QAction(text="output")
+                        _ = select_output_action.triggered.connect(selected_ouput)
+                        select_menu.addAction(select_output_action)
                 _ = menu.exec(event.screenPos())
 
     @override
     def mouseMoveEvent(self, event: QGraphicsSceneMouseEvent, /) -> None:
         # remove temp items
-        for _ in range(len(self.temp_paths)):
+        paths = len(self.temp_paths)
+        for _ in range(paths):
             self.removeItem(self.temp_paths.pop())
 
-        for _ in range(len(self.temp_caditems)):
+        items = len(self.temp_caditems)
+        for _ in range(items):
             self.removeItem(self.temp_caditems.pop())
-
-        print(self.temp_caditems)
+        self.invalidate()
         match self.editor.tool:
             case Tools.WIRE:
                 path = QPainterPath()
@@ -129,7 +202,7 @@ class GraphicsCanvas(QGraphicsScene):
                     )
                     self.addItem(self.editor.cadItem)
                     self.temp_caditems.append(self.editor.cadItem)
-                    self.editor.cadItem = QubitCADItem()
+                    self.editor.cadItem = type(self.editor.cadItem)()
 
             case Tools.NONE:
                 pass
@@ -156,6 +229,8 @@ class GraphicsCanvas(QGraphicsScene):
 
     @override
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent, /) -> None:
+        if event.button() != Qt.MouseButton.LeftButton:
+            return
         match self.editor.tool:
             case Tools.WIRE:
                 if self.first_press:
@@ -175,7 +250,7 @@ class GraphicsCanvas(QGraphicsScene):
                         )
                     )
                     self.add_caditem(self.editor.cadItem)
-                    self.editor.cadItem = QubitCADItem()
+                    self.editor.cadItem = type(self.editor.cadItem)()
 
             case Tools.NONE:
                 for item in self.cad_items:
@@ -186,10 +261,11 @@ class GraphicsCanvas(QGraphicsScene):
                             self.editor.qubititem_selected.emit(
                                 self.selected_caditem.qubit
                             )
-
-    @override
-    def keyReleaseEvent(self, event: QKeyEvent, /) -> None:
-        pass
+                        elif isinstance(self.selected_caditem, ObserverCADItem):
+                            if self.selected_caditem.observer.value is not None:
+                                self.editor.observeritem_selected.emit(
+                                    self.selected_caditem.observer
+                                )
 
 
 class Editor(QGraphicsView):
@@ -202,6 +278,8 @@ class Editor(QGraphicsView):
     grid_step: int = 100
     grid_pen: QPen = QPen(Qt.GlobalColor.lightGray)
     qubititem_selected: Signal = Signal(Qubit)
+    observeritem_selected: Signal = Signal(Observer)
+    circuit: Circuit = Circuit()
     _scene: GraphicsCanvas
 
     def __init__(self):
