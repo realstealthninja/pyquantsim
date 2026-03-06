@@ -1,8 +1,8 @@
 from abc import ABC
 import numpy as np
 
-class QuantumGate(ABC):
 
+class QuantumGate(ABC):
     def __init__(self, matrix, symbol: str):
         self.matrix = matrix
         self.symbol: str = symbol
@@ -10,7 +10,5 @@ class QuantumGate(ABC):
     def __array__(self):
         return np.matrix(self.matrix)
 
-
-
     def __mul__(self, rhs):
-        return np.matrixlib.matrix(self.matrix) *  np.matrixlib.matrix(rhs)
+        return np.matrixlib.matrix(self.matrix) * np.matrixlib.matrix(rhs)
