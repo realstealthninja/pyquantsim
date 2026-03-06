@@ -1,6 +1,6 @@
 [project]
 name = "pyquantsim"
-version = "0.1.0"
+version = "0.1.1"
 description = "A simple Qubit and quantum circuit simulator"
 authors = [
     {name = "Joyal V Poulose", email="joyalvpoulose2007@gmail.com"},
