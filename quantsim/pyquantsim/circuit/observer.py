@@ -1,4 +1,4 @@
-from quantsim.core.qubit import Qubit
+from pyquantsim.core.qubit import Qubit
 from .component import Component
 
 

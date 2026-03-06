@@ -1,5 +1,5 @@
 [project]
-name = "quantsim"
+name = "pyquantsim"
 version = "0.1.0"
 description = "A simple Qubit and quantum circuit simulator"
 authors = [
