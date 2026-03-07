@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     defaults:
       run:
-        working-directory: gui/
+        working-directory: gui
     steps:
       - name: setup python
         uses: actions/setup-python@v5
@@ -24,7 +24,7 @@ jobs:
         uses: sayyid5416/pyinstaller@v1
         with:
           python_ver: "3.14"
-          spec: "gui/build.spec"
+          spec: "build.spec"
           requirements: ""
           upload_exe_with_name: "pyquantsim"
           options: --name "PyQuantSim",
