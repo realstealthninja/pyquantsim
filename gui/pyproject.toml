@@ -24,6 +24,8 @@ build-backend = "poetry.core.masonry.api"
 [tool]
 [tool.pyside6-project]
 files = ["app.py", "windows/*.py", "windows/widgets/*.py"]
+[tool.poetry]
+package-mode = false
 
 [dependency-groups]
 dev = [
