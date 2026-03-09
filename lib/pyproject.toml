@@ -24,6 +24,9 @@ docs = [
     "sphinx (>=9.1.0,<10.0.0)",
     "sphinx-autobuild (>=2025.8.25,<2026.0.0)"
 ]
+doc = [
+    "sphinx-rtd-theme (>=3.1.0,<4.0.0)"
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

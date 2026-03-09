@@ -1,8 +1,12 @@
-from pyquantsim.core.qubit import Qubit
+from ..core.qubit import Qubit
 from .component import Component
 
 
 class Observer(Component):
+    """
+    Observer Represents an observer, observes the given quantum state and collapses it into either zero or one
+    """
+
     value: bool | None = None
     end_qubit: Qubit | None
 
