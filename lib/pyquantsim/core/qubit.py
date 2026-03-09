@@ -7,6 +7,14 @@ from typing_extensions import override
 
 
 class Qubit:
+    f"""
+     Represents a Qubit,
+    ..math::
+        \alpha \\ket{0}
+    :return: _description_
+    :rtype: _type_
+    """
+
     observed: bool | None = None
 
     def __init__(
@@ -15,6 +23,16 @@ class Qubit:
         beta: complex | None = None,
         matrix: np.matrix | None = None,
     ) -> None:
+        """
+        __init__ Creates a qubit
+
+        :param alpha: coefficent of \\ket1  , defaults to None
+        :type alpha: complex | None, optional
+        :param beta: coefficent of \\ket0, defaults to None
+        :type beta: complex | None, optional
+        :param matrix: _description_, defaults to None
+        :type matrix: np.matrix | None, optional
+        """
         if matrix is not None:
             self.alpha = matrix[0][0][0]
             self.beta = matrix[1][0][0]
@@ -43,6 +61,12 @@ class Qubit:
         return np.c_[[self.alpha, self.beta]]
 
     def observe(self) -> bool:
+        """
+        observe Collapses the qubit into either zero or one
+
+        :return: returns the collapsed state of the qubit
+        :rtype: bool
+        """
         if self.observed is not None:
             return self.observed
 
