@@ -2,3 +2,6 @@ __pycache__/
 .qtcreator/
 build/
 dist/
+
+# build time
+*egg-info/

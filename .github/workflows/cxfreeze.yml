@@ -1,7 +1,7 @@
-name: pyinstaller-build
+name: cxfreeze-build
 on: push
 jobs:
-  pyinstaller-build:
+  cxfreeze-build:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]

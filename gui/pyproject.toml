@@ -27,3 +27,15 @@ files = ["app.py", "windows/*.py", "windows/widgets/*.py"]
 [tool.poetry]
 package-mode = false
 
+[tool.cxfreeze]
+executables = [
+    {script = "app.py", base = "gui"}
+]
+[tool.cxfreeze.build_exe]
+build_exe= "dist"
+zip_include_packages = ["encodings", "PySide6", "pyquantsim", "typing-extensions"]
+
+[dependency-groups]
+dev = [
+    "cx-freeze (>=8.6.3,<9.0.0)"
+]

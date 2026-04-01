@@ -2,6 +2,8 @@
 import shutil
 from subprocess import run
 
-run(["python", "-m", "PyInstaller", "app.spec", "--noconfirm"])
-shutil.copytree("assets/", "dist/app/assets", dirs_exist_ok=True)
-shutil.copytree("qml/", "dist/app/qml", dirs_exist_ok=True)
+run(["cxfreeze", "build"])
+shutil.copytree("assets/", "dist/assets", dirs_exist_ok=True)
+shutil.copytree("qml/", "dist/qml", dirs_exist_ok=True)
+shutil.copy("README", "dist/")
+shutil.copy("../LICENSE", "dist/")
