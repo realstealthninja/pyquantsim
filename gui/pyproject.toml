@@ -27,8 +27,3 @@ files = ["app.py", "windows/*.py", "windows/widgets/*.py"]
 [tool.poetry]
 package-mode = false
 
-[dependency-groups]
-dev = [
-    "pyinstaller (>=6.19.0,<7.0.0)",
-    "pyinstaller-hooks-contrib (>=2026.2,<2027.0)"
-]
