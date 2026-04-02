@@ -16,11 +16,13 @@ jobs:
       - name: install dependencies
         run: |
           python -m pip install poetry
+          poetry self add poetry-plugin-shell
           python -m poetry --directory gui install --with dev
 
       - name: Create Executable
         run: |
           cd gui
+          poetry shell
           python scripts/build.py
 
       - name: Upload Artifacts
