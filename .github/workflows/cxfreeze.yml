@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v7.0.0
         with:
           name: pyquantsim-${{ matrix.os }}
-          path: gui/dist/app/
+          path: gui/dist/
