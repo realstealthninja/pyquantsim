@@ -34,6 +34,7 @@ executables = [
 [tool.cxfreeze.build_exe]
 build_exe= "dist"
 zip_include_packages = ["encodings", "PySide6", "pyquantsim", "typing-extensions"]
+excludes = ["tkinter", "http", "xml", "pydoc", "email"]
 
 [dependency-groups]
 dev = [
